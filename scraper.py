@@ -29,22 +29,14 @@ topheadlines = re.findall('"Top Headlines"(.*?)"more-headlines"', html, re.DOTAL
 # Return all "non-overlapping matches" of the pattern in topheadlines as a list of strings assigned to everyheadline 
 everyheadline = re.findall('<a href="(.*?)" class="headline">(.*?)</a>', topheadlines[0], re.DOTALL)
 
-# The following code doesn't work as expected and I haven't figured out why yet.
-#for headlineCode in everyheadline:
-#	headlines = re.search('<a[^>]*?href="(?P<link>[^"]*?)".*>(?P<headline>.+?)?</a>', headlineCode, re.DOTALL)
-#	link = urlparse.urljoin(site, headlines.group('link'))
-#	print link
-
-# The following lines are what remain of the original code
 data = {}
 
-for headline in everyheadline:
-    headlines = re.search('<a[^>]*?href="(?P<link>[^"]*?)".*>(?P<story>.+?)(<img.*/>.*?)?</a>', headline, re.DOTALL)
-    link = urlparse.urljoin(site, headlines.group('link'))
-    story = headlines.group('story').replace("&#039;", "'")
-    data['headline'] = story
-    data['URL'] = link
-    data['date'] = datetime.datetime.today().ctime()
-    scraperwiki.sqlite.save(unique_keys=['URL'], data=data)    
-
-
+# The following code doesn't work as expected and I haven't figured out why
+for headlineCode in everyheadline:
+	headlines = re.search('<a[^>]*?href="(?P<link>)">(?P<headline>)</a>', headlineCode, re.DOTALL)
+	link = urlparse.urljoin(site, headlines.group('link'))
+	headline = headlines.group('headline').replace("&#039;", "'")
+	data['headline'] = headline
+	data['URL'] = link
+	data['date'] = datetime.datetime.today().ctime()
+	scraperwiki.sqlite.save(unique_keys=['URL'], data=data)
