@@ -4,7 +4,7 @@
 
 # Import the ScraperWiki library, which is used to crawl the web.
 # This library will be used to store data to the SQL database.
-# import scraperwiki
+import scraperwiki
 
 # Import the urllib2 module, which is used to open URLs
 # (https://docs.python.org/2/library/urllib2.html).
