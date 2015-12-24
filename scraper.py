@@ -33,7 +33,7 @@ data = {}
 
 # The following code doesn't work as expected and I haven't figured out why
 for headlineCode in everyheadline:
-	headlines = re.search('<a[^>]*?href="(?P<link>)">(?P<headline>)</a>', headlineCode, re.DOTALL)
+	headlines = re.search('<a[^>]*?href="(?P<link>[^"]*?)".*>(?P<headline>.+?)</a>', headlineCode, re.DOTALL)
 	link = urlparse.urljoin(site, headlines.group('link'))
 	headline = headlines.group('headline').replace("&#039;", "'")
 	data['headline'] = headline
