@@ -10,7 +10,7 @@
 
 # Import the ScraperWiki library, which is used to crawl the web.
 # This library will be used to store data to the SQL database.
-#import scraperwiki
+import scraperwiki
 
 # Import the urllib2 module, which is used to open URLs
 # (https://docs.python.org/2/library/urllib2.html).
@@ -50,4 +50,4 @@ for i in range(len(everyheadline)-1):
 	html = urllib2.urlopen(link).read()
 	grafs = re.findall('<p(.*?)itemprop="articleBody">(.*?)</p>', html)
 	data['lead'] = grafs[0][1] # The current article's lead
-	#scraperwiki.sqlite.save(unique_keys=['URL'], data=data)
+	scraperwiki.sqlite.save(unique_keys=['URL'], data=data)
