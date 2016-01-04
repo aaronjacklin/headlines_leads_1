@@ -1,10 +1,16 @@
 # Forked from Joel Eastwood's Globe Headlines (https://classic.scraperwiki.com/scrapers/bbc_headlines_8/) on Dec. 23, 2015
 # Modified by Aaron Jacklin
 # Additional commenting added as I figure out how the code works.
+# Last date worked on: 2016-01-04
+
+# Codes for punctuation marks:
+# &#x2019; -> apostrophe
+# &#x201c; -> left double quotation mark
+# &#x201d; -> right double quotation mark
 
 # Import the ScraperWiki library, which is used to crawl the web.
 # This library will be used to store data to the SQL database.
-import scraperwiki
+#import scraperwiki
 
 # Import the urllib2 module, which is used to open URLs
 # (https://docs.python.org/2/library/urllib2.html).
@@ -34,9 +40,14 @@ everyheadline = re.findall('<a.*?href="(.*?)" class="headline">(.*?)</a>', tophe
 data = {}
 
 for i in range(len(everyheadline)-1):
+	# The findall function returns a list of tuples, which is why the following lines
+	# require two indices to refer to the information we need
 	link = everyheadline[i][0]
 	headline = everyheadline[i][1]
 	data['headline'] = headline
 	data['URL'] = link
 	data['date'] = datetime.datetime.today().ctime()
-	scraperwiki.sqlite.save(unique_keys=['URL'], data=data)
+	html = urllib2.urlopen(link).read()
+	grafs = re.findall('<p(.*?)itemprop="articleBody">(.*?)</p>', html)
+	data['lead'] = grafs[0][1] # The current article's lead
+	#scraperwiki.sqlite.save(unique_keys=['URL'], data=data)
